@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default function Home() {
+export default function signUp() {
   return (
     <main className="flex min-h-screen w-full flex-col items-center justify-between">
       <div className="flex justify-between gap-10 items-center">
@@ -10,7 +10,7 @@ export default function Home() {
             <h1 className="uppercase">Chatbot</h1>
           </div>
           <h1 className="font-extrabold text-center text-2xl mt-5 text-[#9095A1]">
-            Log In
+            Sign Up
           </h1>
           <form className="flex flex-col space-y-4 mt-10">
             <label className="flex flex-col">
@@ -23,7 +23,27 @@ export default function Home() {
               />
             </label>
             <label className="flex flex-col">
+              <span className="text-red-500">Name</span>
+              <input
+                id="name"
+                type="text"
+                className="p-2 border border-gray-200 rounded-md outline-none"
+                required
+                placeholder="Please enter your first last name"
+              />
+            </label>
+            <label className="flex flex-col">
               <span className="text-red-500">Password</span>
+              <input
+                type="password"
+                className="p-2 border border-gray-200 rounded-md outline-none"
+                required
+                placeholder="Please enter your password"
+              />
+            </label>
+
+            <label className="flex flex-col">
+              <span className="text-red-500">Confirm Password</span>
               <input
                 type="password"
                 className="p-2 border border-gray-200 rounded-md outline-none"
@@ -35,12 +55,12 @@ export default function Home() {
               type="submit"
               className="w-full bg-[#15ABFF] text-gray-50 p-2 rounded-md"
             >
-              Log In
+              Sign Up
             </button>
           </form>
           <div className="">
             <p className="text-[#15ABFF]  mt-5 text-left">
-              Don&apos;t have an account? <Link href="signup"> Sign Up</Link>
+              Already have an account? <Link href="/"> Log In</Link>
             </p>
           </div>
         </div>
