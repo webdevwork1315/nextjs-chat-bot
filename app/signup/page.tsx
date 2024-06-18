@@ -6,7 +6,7 @@ export default function signUp() {
     <main className="flex min-h-screen w-full flex-col items-center justify-between">
       <div className="flex justify-between gap-10 items-center">
         <div className=" w-1/2 p-5">
-          <div className="bg-[#6D31ED] text-gray-50 w-20 h-20 flex justify-center items-center p-2 text-xs rounded-lg m-auto">
+          <div className="bg-custom-violet text-gray-50 w-20 h-20 flex justify-center items-center p-2 text-xs rounded-lg m-auto">
             <h1 className="uppercase">Chatbot</h1>
           </div>
           <h1 className="font-extrabold text-center text-2xl mt-5 text-[#9095A1]">
