@@ -3,7 +3,7 @@ import Image from 'next/image';
 export default function Chatbot() {
   return (
     <div>
-      <div className="bg-custom-blue text-gray-50 p-2 rounded-md flex items-center">
+      <div className="bg-custom-blue text-gray-50 p-3 rounded-md flex items-center">
         <div className="mr-3">
           <Image
             src="/images/demo-avatar.png"
