@@ -6,11 +6,11 @@ export default function Home() {
   return (
     <div className="">
       <Navbar />
-      <div className="flex items-center max-w-6xl m-auto mt-6">
-        <div className="w-1/2 mr-5">
+      <div className="grid grid-cols-3 max-w-6xl m-auto mt-6">
+        <div className="grid-cols-1 mr-5">
           <Conversations />
         </div>
-        <div className="w-full">
+        <div className="w-full col-span-2">
           <Chatbot />
         </div>
       </div>

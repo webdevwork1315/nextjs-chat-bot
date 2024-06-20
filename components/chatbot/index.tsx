@@ -15,6 +15,7 @@ export default function Chatbot() {
         </div>
         <h1>Chatbot</h1>
       </div>
+      <div className="bg-custom-gray h-[70vh] rounded-md mt-2"></div>
     </div>
   );
 }

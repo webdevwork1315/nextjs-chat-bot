@@ -20,7 +20,7 @@ export default function Conversations() {
           </svg>
         </div>
       </div>
-      <div className=""></div>
+      <div className="bg-custom-gray h-[70vh] rounded-md mt-2"></div>
     </div>
   );
 }
