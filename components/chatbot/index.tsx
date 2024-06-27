@@ -15,30 +15,37 @@ export default function Chatbot() {
         </div>
         <h1>Chatbot</h1>
       </div>
-      <div className="bg-custom-gray h-[60vh] rounded-md mt-2"></div>
+      <div className="bg-custom-gray h-[60vh] rounded-md mt-2 shadow-md"></div>
       <div className="relative">
         <input
-          className="bg-custom-gray h-[9vh] rounded-full px-10 mt-2 w-full outline-none text-lg"
+          className="bg-custom-gray h-[9vh] rounded-full px-10 mt-2 w-full outline-none text-lg shadow-md"
           type="text"
           name=""
           id=""
           placeholder="Reply to chat"
         />
-        <button>
+        <button className="absolute top-2 bottom-0 right-6 ">
           <svg
-            width="22"
-            height="22"
-            viewBox="0 0 22 22"
-            strokeWidth={1.5}
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
             fill="none"
+            color="white"
+            className="bg-custom-violet h-12 w-12 p-2 rounded-full"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              d="M19.5716 2.42859L13.5716 19.5714L9.28585 12.7143L2.42871 8.42859L19.5716 2.42859Z"
+              d="M20.5718 3.42859L10.2861 13.7143"
               stroke="white"
-              stroke-width="2.05714"
-              stroke-miterlimit="10"
-              stroke-linecap="square"
+              strokeWidth="2.05714"
+              strokeMiterlimit="10"
+            />
+            <path
+              d="M20.5716 3.42859L14.5716 20.5714L10.2859 13.7143L3.42871 9.42859L20.5716 3.42859Z"
+              stroke="white"
+              strokeWidth="2.05714"
+              strokeMiterlimit="10"
+              strokeLinecap="square"
             />
           </svg>
         </button>
