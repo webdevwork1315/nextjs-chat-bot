@@ -1,7 +1,43 @@
+'use client';
+import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
+
+const userSignUp = async (name: string, email: string, password: string) => {
+  try {
+    const response = await axios(
+      'https://x8ki-letl-twmt.n7.xano.io/api:SSOLzzIz/auth/signup',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        data: JSON.stringify({ name, email, password }),
+      },
+    );
+
+    const data = await response.data;
+
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export default function SignUp() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSignUp = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    console.log(email, password);
+
+    userSignUp(name, email, password);
+  };
+
   return (
     <div className="flex justify-between gap-10 items-center">
       <div className=" w-1/2 p-5">
@@ -11,7 +47,7 @@ export default function SignUp() {
         <h1 className="font-extrabold text-center text-2xl mt-5 text-[#9095A1]">
           Sign Up
         </h1>
-        <form className="flex flex-col space-y-4 mt-10">
+        <form onSubmit={handleSignUp} className="flex flex-col space-y-4 mt-10">
           <label className="flex flex-col">
             <span className="text-red-500">Email</span>
             <input
@@ -19,6 +55,7 @@ export default function SignUp() {
               className="p-2 border border-gray-200 rounded-md outline-none"
               required
               placeholder="Please enter your email"
+              onChange={(e) => setEmail(e.target.value)}
             />
           </label>
           <label className="flex flex-col">
@@ -29,6 +66,7 @@ export default function SignUp() {
               className="p-2 border border-gray-200 rounded-md outline-none"
               required
               placeholder="Please enter your first last name"
+              onChange={(e) => setName(e.target.value)}
             />
           </label>
           <label className="flex flex-col">
@@ -38,6 +76,7 @@ export default function SignUp() {
               className="p-2 border border-gray-200 rounded-md outline-none"
               required
               placeholder="Please enter your password"
+              onChange={(e) => setPassword(e.target.value)}
             />
           </label>
 
@@ -48,6 +87,7 @@ export default function SignUp() {
               className="p-2 border border-gray-200 rounded-md outline-none"
               required
               placeholder="Please enter your password"
+              onChange={(e) => setPassword(e.target.value)}
             />
           </label>
           <button
