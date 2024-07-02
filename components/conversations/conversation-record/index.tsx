@@ -7,6 +7,12 @@ export default function ConversationRecord() {
   const conversationRecordPopup = useAppSelector(
     (state) => state.ui.conversationRecordPopup,
   );
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log('submitted');
+  };
+
   return (
     <div
       className={` backdrop-blur-md opacity-0 flex justify-center items-center m-auto duration-300 rounded-md top-0 right-0 left-0 bottom-0 shadow-md absolute z-10 ${
@@ -25,7 +31,7 @@ export default function ConversationRecord() {
             Close
           </button>
         </div>
-        <form action="" className="p-5">
+        <form onSubmit={handleSubmit} className="p-5">
           <div className="flex flex-col">
             <label htmlFor="" className="">
               Title:
