@@ -68,7 +68,7 @@ export default function Conversations() {
           {allConversationRecords.map((record, index) => (
             <div
               key={index}
-              className="border-b p-3 mt-3 bg-custom-violet rounded-lg text-custom-gray flex items-center justify-between"
+              className="border-b p-3 mt-3 bg-[#DEE1E6] rounded-lg text-gray-900 flex items-center justify-between"
             >
               <h1>Conversation {index + 1}</h1>
               <button>

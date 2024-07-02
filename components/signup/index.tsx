@@ -5,12 +5,14 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useAppDispatch } from '@/store/hooks';
 import { setToken } from '@/features/auth/authSlice';
+import { useRouter } from 'next/navigation';
 
 const userSignUp = async (
   name: string,
   email: string,
   password: string,
   dispatch: any,
+  router: any,
 ) => {
   try {
     const response = await axios(
@@ -29,6 +31,8 @@ const userSignUp = async (
     localStorage.setItem('token', data.authToken);
     dispatch(setToken(data.authToken));
 
+    router.push('/home');
+
     console.log(data);
   } catch (error) {
     console.log(error);
@@ -42,12 +46,14 @@ export default function SignUp() {
 
   const dispatch = useAppDispatch();
 
+  const router = useRouter();
+
   const handleSignUp = (e: React.FormEvent) => {
     e.preventDefault();
 
     console.log(email, password);
 
-    userSignUp(name, email, password, dispatch);
+    userSignUp(name, email, password, dispatch, router);
   };
 
   return (
