@@ -2,10 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface UiState {
     count: number;
+    conversationRecordPopup: boolean;
 }
 
 const initialState: UiState = {
     count: 50,
+    conversationRecordPopup: false
 };
 
 export const uiSlice = createSlice({
@@ -15,11 +17,15 @@ export const uiSlice = createSlice({
         countUp: (state: { count: number }) => {
             state.count++;
         },
-    },
+        toogleConversationRecordPopup: (state: { conversationRecordPopup: boolean }) => {
+            state.conversationRecordPopup = !state.conversationRecordPopup;
+        }
+    }
 });
 
 export const {
-    countUp
+    countUp,
+    toogleConversationRecordPopup
 } = uiSlice.actions;
 
 export default uiSlice.reducer;
