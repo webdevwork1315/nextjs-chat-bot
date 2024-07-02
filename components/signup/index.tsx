@@ -3,8 +3,15 @@ import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
+import { useAppDispatch } from '@/store/hooks';
+import { setToken } from '@/features/auth/authSlice';
 
-const userSignUp = async (name: string, email: string, password: string) => {
+const userSignUp = async (
+  name: string,
+  email: string,
+  password: string,
+  dispatch: any,
+) => {
   try {
     const response = await axios(
       'https://x8ki-letl-twmt.n7.xano.io/api:SSOLzzIz/auth/signup',
@@ -19,6 +26,9 @@ const userSignUp = async (name: string, email: string, password: string) => {
 
     const data = await response.data;
 
+    localStorage.setItem('token', data.authToken);
+    dispatch(setToken(data.authToken));
+
     console.log(data);
   } catch (error) {
     console.log(error);
@@ -30,12 +40,14 @@ export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const dispatch = useAppDispatch();
+
   const handleSignUp = (e: React.FormEvent) => {
     e.preventDefault();
 
     console.log(email, password);
 
-    userSignUp(name, email, password);
+    userSignUp(name, email, password, dispatch);
   };
 
   return (

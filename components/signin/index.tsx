@@ -3,8 +3,10 @@ import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { setToken } from '@/features/auth/authSlice';
 
-const userLogin = async (email: string, password: string) => {
+const userLogin = async (email: string, password: string, dispatch: any) => {
   try {
     const response = await axios(
       'https://x8ki-letl-twmt.n7.xano.io/api:SSOLzzIz/auth/login',
@@ -19,6 +21,9 @@ const userLogin = async (email: string, password: string) => {
 
     const data = await response.data;
 
+    localStorage.setItem('token', data.authToken);
+    dispatch(setToken(data.authToken));
+
     console.log(data);
   } catch (error) {
     console.log(error);
@@ -29,12 +34,14 @@ export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const dispatch = useAppDispatch();
+
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
 
     console.log(email, password);
 
-    userLogin(email, password);
+    userLogin(email, password, dispatch);
   };
 
   return (
