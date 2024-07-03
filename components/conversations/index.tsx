@@ -1,11 +1,11 @@
 'use client';
-import { toogleConversationRecordPopup } from '@/features/ui/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import ConversationRecord from '../loading';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { addAllConversationsRecords } from '@/features/conversations/convoSlice';
-import ConversationRecordLoading from '../loading';
+import { toggleLoading } from '@/features/ui/uiSlice';
+import ChatLoading from '../loading';
 
 const getConversationRecord = async (authToken: string | null) => {
   try {
@@ -29,9 +29,7 @@ export default function Conversations() {
     (state) => state.convo.conversations,
   );
 
-  const conversationRecordPopup = useAppSelector(
-    (state) => state.ui.conversationRecordPopup,
-  );
+  const conversationRecordLoading = useAppSelector((state) => state.ui.loading);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -48,7 +46,7 @@ export default function Conversations() {
         <button
           className="hover:text-gray-300 duration-300"
           onClick={() => {
-            dispatch(toogleConversationRecordPopup());
+            dispatch(toggleLoading());
           }}
         >
           <svg
@@ -68,7 +66,7 @@ export default function Conversations() {
         </button>
       </div>
       <div className="bg-custom-gray relative h-[70vh] rounded-md mt-2 shadow-md">
-        <ConversationRecordLoading />
+        <ChatLoading isLoading={conversationRecordLoading} />
         {/* Conversations */}
         <div className=" mt-5">
           {allConversationRecords &&

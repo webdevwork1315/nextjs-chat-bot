@@ -1,15 +1,10 @@
 'use client';
-import { useAppSelector, useAppDispatch } from '@/store/hooks';
 
-export default function ConversationRecordLoading() {
-  const conversationRecordPopup = useAppSelector(
-    (state) => state.ui.conversationRecordPopup,
-  );
-
+export default function ChatLoading({ isLoading }: { isLoading: boolean }) {
   return (
     <div
       className={` backdrop-blur-sm opacity-0 flex justify-center items-center m-auto duration-300 rounded-md top-0 right-0 left-0 bottom-0 shadow-md absolute z-10 ${
-        conversationRecordPopup ? 'visible opacity-100' : 'invisible'
+        isLoading ? 'visible opacity-100' : 'invisible'
       }`}
     >
       <div className="text-xs">
