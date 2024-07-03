@@ -3,10 +3,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 interface UiState {
     count: number;
     conversationRecordPopup: boolean;
+    conversationRecordLoading: boolean;
 }
 
 const initialState: UiState = {
     count: 50,
+    conversationRecordLoading: false,
     conversationRecordPopup: false
 };
 
@@ -19,13 +21,17 @@ export const uiSlice = createSlice({
         },
         toogleConversationRecordPopup: (state: { conversationRecordPopup: boolean }) => {
             state.conversationRecordPopup = !state.conversationRecordPopup;
+        },
+        toogleConversationRecordLoading: (state: { conversationRecordLoading: boolean }) => {
+            state.conversationRecordLoading = !state.conversationRecordLoading;
         }
     }
 });
 
 export const {
     countUp,
-    toogleConversationRecordPopup
+    toogleConversationRecordPopup,
+    toogleConversationRecordLoading
 } = uiSlice.actions;
 
 export default uiSlice.reducer;
