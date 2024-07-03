@@ -60,6 +60,31 @@ const createNewConversationRecord = async (
   }
 };
 
+const deleteConversatoinRecord = async (
+  authToken: string | null,
+  conversationId: string | null,
+  dispatch: any,
+) => {
+  try {
+    dispatch(toggleLoading());
+    const response = await axios.delete(
+      `https://x8ki-letl-twmt.n7.xano.io/api:SSOLzzIz/conversation/${conversationId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      },
+    );
+    const data = await response.data;
+    dispatch(toggleLoading());
+    dispatch(toggleReFetchData());
+    return data;
+  } catch (error) {
+    console.error(error);
+    dispatch(toggleLoading());
+  }
+};
+
 export default function Conversations() {
   const allConversationRecords = useAppSelector(
     (state) => state.convo.conversations,
@@ -119,7 +144,15 @@ export default function Conversations() {
                 className="border-b p-3 mt-3 bg-[#DEE1E6] rounded-lg text-gray-900 flex items-center justify-between"
               >
                 <h1>Conversation {index + 1}</h1>
-                <button>
+                <button
+                  onClick={async () => {
+                    await deleteConversatoinRecord(
+                      localStorage.getItem('token'),
+                      record.id,
+                      dispatch,
+                    );
+                  }}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
