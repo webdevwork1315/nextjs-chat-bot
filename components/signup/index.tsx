@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useAppDispatch } from '@/store/hooks';
-import { setToken } from '@/features/auth/authSlice';
+import { setToken, setUserId } from '@/features/auth/authSlice';
 import { useRouter } from 'next/navigation';
 
 const userSignUp = async (
@@ -28,8 +28,19 @@ const userSignUp = async (
 
     const data = await response.data;
 
+    const userId = await axios.get(
+      'https://x8ki-letl-twmt.n7.xano.io/api:SSOLzzIz/auth/me',
+      {
+        headers: {
+          Authorization: `Bearer ${data.authToken}`,
+        },
+      },
+    );
+
     localStorage.setItem('token', data.authToken);
+    localStorage.setItem('userId', userId.data.id);
     dispatch(setToken(data.authToken));
+    dispatch(setUserId(userId.data.id));
 
     router.push('/home');
 

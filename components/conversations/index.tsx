@@ -1,14 +1,17 @@
 'use client';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import ConversationRecord from '../loading';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { addAllConversationsRecords } from '@/features/conversations/convoSlice';
-import { toggleLoading } from '@/features/ui/uiSlice';
+import { toggleLoading, toggleReFetchData } from '@/features/ui/uiSlice';
 import ChatLoading from '../loading';
 
-const getConversationRecord = async (authToken: string | null) => {
+const getConversationRecord = async (
+  authToken: string | null,
+  dispatch: any,
+) => {
   try {
+    dispatch(toggleLoading());
     const response = await axios.get(
       'https://x8ki-letl-twmt.n7.xano.io/api:SSOLzzIz/conversation',
       {
@@ -18,9 +21,42 @@ const getConversationRecord = async (authToken: string | null) => {
       },
     );
     const data = await response.data;
+    dispatch(toggleLoading());
     return data;
   } catch (error) {
     console.error(error);
+    dispatch(toggleLoading());
+  }
+};
+
+const createNewConversationRecord = async (
+  authToken: string | null,
+  userId: string | null,
+  dispatch: any,
+) => {
+  try {
+    console.log({ authToken, userId });
+    const response = await axios.post(
+      'https://x8ki-letl-twmt.n7.xano.io/api:SSOLzzIz/conversation',
+      {
+        id: userId,
+        user_id: userId,
+        label: 'string',
+        created_at: 'now',
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      },
+    );
+    const data = await response.data;
+    dispatch(toggleLoading());
+    dispatch(toggleReFetchData());
+    return data;
+  } catch (error) {
+    console.error(error);
+    dispatch(toggleLoading());
   }
 };
 
@@ -28,16 +64,18 @@ export default function Conversations() {
   const allConversationRecords = useAppSelector(
     (state) => state.convo.conversations,
   );
+  const reFetchData = useAppSelector((state) => state.ui.reFetchData);
 
   const conversationRecordLoading = useAppSelector((state) => state.ui.loading);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    getConversationRecord(localStorage.getItem('token')).then((data) => {
-      console.log(data);
-      dispatch(addAllConversationsRecords(data));
-    });
-  }, [dispatch]);
+    getConversationRecord(localStorage.getItem('token'), dispatch).then(
+      (data) => {
+        dispatch(addAllConversationsRecords(data));
+      },
+    );
+  }, [dispatch, reFetchData]);
 
   return (
     <div className="">
@@ -45,8 +83,13 @@ export default function Conversations() {
         <h1>Conversations</h1>
         <button
           className="hover:text-gray-300 duration-300"
-          onClick={() => {
+          onClick={async () => {
             dispatch(toggleLoading());
+            await createNewConversationRecord(
+              localStorage.getItem('token'),
+              localStorage.getItem('userId'),
+              dispatch,
+            );
           }}
         >
           <svg
@@ -65,7 +108,7 @@ export default function Conversations() {
           </svg>
         </button>
       </div>
-      <div className="bg-custom-gray relative h-[70vh] rounded-md mt-2 shadow-md">
+      <div className="bg-custom-gray relative h-[70vh] overflow-y-scroll rounded-md mt-2 shadow-md">
         <ChatLoading isLoading={conversationRecordLoading} />
         {/* Conversations */}
         <div className=" mt-5">

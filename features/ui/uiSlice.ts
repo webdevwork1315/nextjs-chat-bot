@@ -3,13 +3,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 interface UiState {
     count: number;
     loading: boolean;
-    conversationRecordLoading: boolean;
+    reFetchData: boolean;
 }
 
 const initialState: UiState = {
     count: 50,
     loading: false,
-    conversationRecordLoading: false,
+    reFetchData: false,
 };
 
 export const uiSlice = createSlice({
@@ -22,17 +22,16 @@ export const uiSlice = createSlice({
         toggleLoading: (state: { loading: boolean }) => {
             state.loading = !state.loading;
         },
-        toogleConversationRecordLoading: (state: { conversationRecordLoading: boolean }) => {
-            state.conversationRecordLoading = !state.conversationRecordLoading;
+        toggleReFetchData: (state: { reFetchData: boolean }) => {
+            state.reFetchData = !state.reFetchData;
         },
-
     }
 });
 
 export const {
     countUp,
-    toogleConversationRecordLoading,
-    toggleLoading
+    toggleLoading,
+    toggleReFetchData
 } = uiSlice.actions;
 
 export default uiSlice.reducer;

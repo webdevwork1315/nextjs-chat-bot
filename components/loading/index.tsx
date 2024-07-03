@@ -3,7 +3,7 @@
 export default function ChatLoading({ isLoading }: { isLoading: boolean }) {
   return (
     <div
-      className={` backdrop-blur-sm opacity-0 flex justify-center items-center m-auto duration-300 rounded-md top-0 right-0 left-0 bottom-0 shadow-md absolute z-10 ${
+      className={` backdrop-blur-sm opacity-0 flex justify-center items-center m-auto duration-300 rounded-md h-full w-full top-0 right-0 left-0 bottom-0 shadow-md fixed z-10 ${
         isLoading ? 'visible opacity-100' : 'invisible'
       }`}
     >
