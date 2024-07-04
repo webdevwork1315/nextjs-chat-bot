@@ -2,10 +2,17 @@
 import { setToken } from '@/features/auth/authSlice';
 import { useAppDispatch } from '@/store/hooks';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function Navbar() {
   const dispatch = useAppDispatch();
   const router = useRouter();
+
+  useEffect(() => {
+    if (!localStorage.getItem('token')) {
+      router.push('/');
+    }
+  }, [router]);
 
   return (
     <nav className="flex justify-between py-3 px-8 items-center border-b">
