@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import axios from 'axios';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
+import ChatLoading from '../loading';
 
 const getChatbotMsg = async (
   convoId: string | null,
@@ -14,6 +15,7 @@ const getChatbotMsg = async (
 ) => {
   try {
     console.log({ convoId });
+    if (message === '') return;
     const response = await axios.post(
       'https://x8ki-letl-twmt.n7.xano.io/api:SSOLzzIz/chat',
       {
@@ -29,7 +31,7 @@ const getChatbotMsg = async (
     );
     const data = await response.data;
     dispatch(setChatbotMessages(data));
-    console.log(data);
+    // console.log(data);
     return data;
   } catch (error) {
     console.error(error);
@@ -45,6 +47,8 @@ export default function Chatbot() {
     (state) => state.chatbot.conversation_id,
   );
   const [message, setMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
   const dispatch = useAppDispatch();
 
   const chatbotContainerRef = useRef<HTMLDivElement>(null);
@@ -74,6 +78,7 @@ export default function Chatbot() {
         ref={chatbotContainerRef}
         className="bg-custom-gray h-[60vh] overflow-y-auto rounded-md mt-2 shadow-md"
       >
+        <ChatLoading isLoading={isLoading} />
         {chatbotMessages.map((message: any, index: any) => (
           <div
             key={index}
@@ -96,12 +101,14 @@ export default function Chatbot() {
         <button
           className="absolute top-2 bottom-0 right-6 "
           onClick={async () => {
+            setIsLoading(true);
             await getChatbotMsg(
               conversationId.toString(),
               message,
               localStorage.getItem('token'),
               dispatch,
             );
+            setIsLoading(false);
             setMessage('');
           }}
         >

@@ -39,7 +39,7 @@ const createNewConversationRecord = async (
   dispatch: any,
 ) => {
   try {
-    console.log({ authToken, userId });
+    // console.log({ authToken, userId });
     const response = await axios.post(
       'https://x8ki-letl-twmt.n7.xano.io/api:SSOLzzIz/conversation',
       {
@@ -107,7 +107,7 @@ const getChatbotMsg = async (
     const data = await response.data;
     dispatch(toggleLoading());
     dispatch(setChatbotMessages(data));
-    console.log(data);
+    // console.log(data);
     return data;
   } catch (error) {
     console.error(error);
@@ -173,7 +173,7 @@ export default function Conversations() {
                 key={index}
                 className="border-b cursor-pointer p-3 mt-3 bg-[#DEE1E6] rounded-lg text-gray-900 flex items-center justify-between"
                 onClick={() => {
-                  console.log('Conversation Record:', record);
+                  // console.log('Conversation Record:', record);
                   dispatch(toggleLoading());
                   dispatch(setConversationId(record.id));
                   getChatbotMsg(
