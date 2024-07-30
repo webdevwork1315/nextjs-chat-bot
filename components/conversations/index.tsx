@@ -5,7 +5,10 @@ import axios from 'axios';
 import { addAllConversationsRecords } from '@/features/conversations/convoSlice';
 import { toggleLoading, toggleReFetchData } from '@/features/ui/uiSlice';
 import ChatLoading from '../loading';
-import { setChatbotMessages } from '@/features/chatbot/chatbotSlice';
+import {
+  setChatbotMessages,
+  setConversationId,
+} from '@/features/chatbot/chatbotSlice';
 
 const getConversationRecord = async (
   authToken: string | null,
@@ -172,6 +175,7 @@ export default function Conversations() {
                 onClick={() => {
                   console.log('Conversation Record:', record);
                   dispatch(toggleLoading());
+                  dispatch(setConversationId(record.id));
                   getChatbotMsg(
                     record.id,
                     localStorage.getItem('token'),

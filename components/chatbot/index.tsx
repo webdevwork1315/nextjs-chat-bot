@@ -1,6 +1,61 @@
+'use client';
+import { setChatbotMessages } from '@/features/chatbot/chatbotSlice';
+import { toggleLoading } from '@/features/ui/uiSlice';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import axios from 'axios';
 import Image from 'next/image';
+import { useEffect, useRef, useState } from 'react';
+
+const getChatbotMsg = async (
+  convoId: string | null,
+  message: string | null,
+  authToken: string | null,
+  dispatch: any,
+) => {
+  try {
+    console.log({ convoId });
+    const response = await axios.post(
+      'https://x8ki-letl-twmt.n7.xano.io/api:SSOLzzIz/chat',
+      {
+        conversation_id: convoId,
+        message,
+        created_at: 'now',
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      },
+    );
+    const data = await response.data;
+    dispatch(setChatbotMessages(data));
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error(error);
+    dispatch(toggleLoading());
+  }
+};
 
 export default function Chatbot() {
+  const chatbotMessages = useAppSelector(
+    (state) => state.chatbot.chatbotMessages,
+  );
+  const conversationId = useAppSelector(
+    (state) => state.chatbot.conversation_id,
+  );
+  const [message, setMessage] = useState('');
+  const dispatch = useAppDispatch();
+
+  const chatbotContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (chatbotContainerRef.current) {
+      chatbotContainerRef.current.scrollTop =
+        chatbotContainerRef.current.scrollHeight;
+    }
+  }, [chatbotMessages]);
+
   return (
     <div>
       <div className="bg-custom-blue text-gray-50 p-3 rounded-md flex items-center">
@@ -15,7 +70,19 @@ export default function Chatbot() {
         </div>
         <h1>Chatbot</h1>
       </div>
-      <div className="bg-custom-gray h-[60vh] rounded-md mt-2 shadow-md"></div>
+      <div
+        ref={chatbotContainerRef}
+        className="bg-custom-gray h-[60vh] overflow-y-auto rounded-md mt-2 shadow-md"
+      >
+        {chatbotMessages.map((message: any, index: any) => (
+          <div
+            key={index}
+            className="border-b p-3 mt-3 bg-[#DEE1E6] rounded-lg text-gray-900"
+          >
+            {message.content}
+          </div>
+        ))}
+      </div>
       <div className="relative">
         <input
           className="bg-custom-gray h-[9vh] rounded-full px-10 mt-2 w-full outline-none text-lg shadow-md"
@@ -23,8 +90,21 @@ export default function Chatbot() {
           name=""
           id=""
           placeholder="Reply to chat"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
         />
-        <button className="absolute top-2 bottom-0 right-6 ">
+        <button
+          className="absolute top-2 bottom-0 right-6 "
+          onClick={async () => {
+            await getChatbotMsg(
+              conversationId.toString(),
+              message,
+              localStorage.getItem('token'),
+              dispatch,
+            );
+            setMessage('');
+          }}
+        >
           <svg
             width="24"
             height="24"
