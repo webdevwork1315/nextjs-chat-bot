@@ -5,6 +5,7 @@ import axios from 'axios';
 import { addAllConversationsRecords } from '@/features/conversations/convoSlice';
 import { toggleLoading, toggleReFetchData } from '@/features/ui/uiSlice';
 import ChatLoading from '../loading';
+import { setChatbotMessages } from '@/features/chatbot/chatbotSlice';
 
 const getConversationRecord = async (
   authToken: string | null,
@@ -85,6 +86,32 @@ const deleteConversatoinRecord = async (
   }
 };
 
+const getChatbotMsg = async (
+  convoId: string | null,
+  authToken: string | null,
+  dispatch: any,
+) => {
+  try {
+    console.log({ convoId });
+    const response = await axios.get(
+      'https://x8ki-letl-twmt.n7.xano.io/api:SSOLzzIz/conversation/' + convoId,
+      {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      },
+    );
+    const data = await response.data;
+    dispatch(toggleLoading());
+    dispatch(setChatbotMessages(data));
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error(error);
+    dispatch(toggleLoading());
+  }
+};
+
 export default function Conversations() {
   const allConversationRecords = useAppSelector(
     (state) => state.convo.conversations,
@@ -141,9 +168,18 @@ export default function Conversations() {
             allConversationRecords.map((record, index) => (
               <div
                 key={index}
-                className="border-b p-3 mt-3 bg-[#DEE1E6] rounded-lg text-gray-900 flex items-center justify-between"
+                className="border-b cursor-pointer p-3 mt-3 bg-[#DEE1E6] rounded-lg text-gray-900 flex items-center justify-between"
+                onClick={() => {
+                  console.log('Conversation Record:', record);
+                  dispatch(toggleLoading());
+                  getChatbotMsg(
+                    record.id,
+                    localStorage.getItem('token'),
+                    dispatch,
+                  );
+                }}
               >
-                <h1>Conversation {index + 1}</h1>
+                <h1>Conversation {record.id}</h1>
                 <button
                   onClick={async () => {
                     await deleteConversatoinRecord(
